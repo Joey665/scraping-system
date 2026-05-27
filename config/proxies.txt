@@ -1,0 +1,14 @@
+# Proxy list for Bracken & KFEM Scraper
+# One proxy per line. Format: protocol://user:pass@host:port
+# Lines starting with # are ignored.
+# Leave this file empty if not using proxies (set PROXY_ENABLED=false in .env)
+#
+# Examples:
+# http://username:password@proxy1.example.com:8080
+# http://username:password@proxy2.example.com:8080
+# socks5://username:password@proxy3.example.com:1080
+#
+# Recommended providers for Nigerian scraping:
+# - Bright Data (brightdata.com) — residential proxies
+# - Oxylabs (oxylabs.io) — residential proxies
+# - Smartproxy (smartproxy.com) — affordable option
