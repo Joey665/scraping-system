@@ -4,9 +4,11 @@
 Usage:
     python debug_maps_repro.py "estate in lekki"
     python debug_maps_repro.py "estate in lekki" --headful
+    xvfb-run -a python debug_maps_repro.py "estate in lekki" --headful
 """
 
 import asyncio
+import os
 from datetime import datetime
 from pathlib import Path
 
@@ -23,7 +25,17 @@ from scraper.utils.logger import log
 @click.option("--headful/--headless", default=True, help="Open the browser visibly for debugging.")
 def main(query: str, headful: bool):
     """Open a single Google Maps search and save a screenshot."""
-    settings.SCRAPER_HEADLESS = not headful
+    has_display = bool(os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY"))
+
+    if headful and not has_display:
+        log.warning(
+            "No X server detected. Falling back to headless mode. "
+            "Use 'xvfb-run -a python debug_maps_repro.py <query> --headful' to run visibly."
+        )
+        settings.SCRAPER_HEADLESS = True
+    else:
+        settings.SCRAPER_HEADLESS = not headful
+
     settings.SCRAPER_VERBOSE_DUMPS = True
     settings.LOG_LEVEL = "DEBUG"
     asyncio.run(run(query))
